@@ -13,7 +13,7 @@ class GildedRose(object):
     def update_quality_each(self, item):
         if item.name == "Aged Brie":
             item = self.update_quality_aged_brie(item)
-        elif item.name == "Backstage passes to a TAFKAL80ETC concert":
+        elif "Backstage passes" in item.name:
             item = self.update_quality_backstage_pass(item)
         elif "Conjured" in item.name:
             item = self.update_quality_conjured_item(item)
