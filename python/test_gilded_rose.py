@@ -77,7 +77,6 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(-1, items[0].sell_in)
         self.assertEqual(0, items[0].quality)
 
-    @unittest.skip("new feature not implemented skip for now")
     def test_conjured_item_should_degrade_in_quality_twice_as_fast(self):
         items = [Item("Conjured foo", 1, 10)]
         gilded_rose = GildedRose(items)
