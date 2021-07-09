@@ -5,6 +5,14 @@ from gilded_rose import Item, GildedRose
 
 
 class GildedRoseTest(unittest.TestCase):
+    def test_normal_item_should_drop_quality_by_1_before_sell_date(self):
+        items = [Item("foo", 1, 3)]
+        gilded_rose = GildedRose(items)
+        gilded_rose.update_quality()
+        self.assertEqual("foo", items[0].name)
+        self.assertEqual(0, items[0].sell_in)
+        self.assertEqual(2, items[0].quality)
+
     def test_quality_should_not_be_negative(self):
         items = [Item("foo", 0, 0)]
         gilded_rose = GildedRose(items)
@@ -13,7 +21,7 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(-1, items[0].sell_in)
         self.assertEqual(0, items[0].quality)
     
-    def test_quality_should_drop_twice_as_fast_after_sell_date_passed(self):
+    def test_normal_item_should_drop_quality_by_2_after_sell_date(self):
         items = [Item("foo", 0, 3)]
         gilded_rose = GildedRose(items)
         gilded_rose.update_quality()
@@ -77,13 +85,21 @@ class GildedRoseTest(unittest.TestCase):
         self.assertEqual(-1, items[0].sell_in)
         self.assertEqual(0, items[0].quality)
 
-    def test_conjured_item_should_degrade_in_quality_twice_as_fast(self):
+    def test_conjured_item_should_drop_quality_by_2_before_sell_date(self):
         items = [Item("Conjured foo", 1, 10)]
         gilded_rose = GildedRose(items)
         gilded_rose.update_quality()
         self.assertEqual("Conjured foo", items[0].name)
         self.assertEqual(0, items[0].sell_in)
         self.assertEqual(8, items[0].quality)
+
+    def test_conjured_item_should_drop_quality_by_4_after_sell_date(self):
+        items = [Item("Conjured foo", 0, 10)]
+        gilded_rose = GildedRose(items)
+        gilded_rose.update_quality()
+        self.assertEqual("Conjured foo", items[0].name)
+        self.assertEqual(-1, items[0].sell_in)
+        self.assertEqual(6, items[0].quality)
 
         
 if __name__ == '__main__':
