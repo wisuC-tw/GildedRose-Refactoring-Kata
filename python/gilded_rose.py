@@ -42,7 +42,7 @@ class GildedRose(object):
         elif item.sell_in <= 10:
             item.quality += 2
         else:
-            pass
+            item.quality += 1
         return item
 
 
