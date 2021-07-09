@@ -7,33 +7,43 @@ class GildedRose(object):
 
     def update_quality(self):
         for item in self.items:
-            if item.name != "Aged Brie" and item.name != "Backstage passes to a TAFKAL80ETC concert":
-                if item.quality > 0:
-                    if item.name != "Sulfuras, Hand of Ragnaros":
-                        item.quality = item.quality - 1
-            else:
-                if item.quality < 50:
-                    item.quality = item.quality + 1
-                    if item.name == "Backstage passes to a TAFKAL80ETC concert":
-                        if item.sell_in < 11:
-                            if item.quality < 50:
-                                item.quality = item.quality + 1
-                        if item.sell_in < 6:
-                            if item.quality < 50:
-                                item.quality = item.quality + 1
             if item.name != "Sulfuras, Hand of Ragnaros":
-                item.sell_in = item.sell_in - 1
-            if item.sell_in < 0:
-                if item.name != "Aged Brie":
-                    if item.name != "Backstage passes to a TAFKAL80ETC concert":
-                        if item.quality > 0:
-                            if item.name != "Sulfuras, Hand of Ragnaros":
-                                item.quality = item.quality - 1
-                    else:
-                        item.quality = item.quality - item.quality
-                else:
-                    if item.quality < 50:
-                        item.quality = item.quality + 1
+                item = self.update_quality_each(item)
+
+    def update_quality_each(self, item):
+        if item.name == "Aged Brie":
+            item = self.update_quality_aged_brie(item)
+        elif item.name == "Backstage passes to a TAFKAL80ETC concert":
+            item = self.update_quality_backstage_pass(item)
+        else:
+            item = self.update_quality_normal_item(item)
+
+        item.sell_in -= 1
+        item.quality = max(min(item.quality, 50), 0)
+
+        return item
+
+    def update_quality_normal_item(self, item):
+        if item.sell_in > 0:
+            item.quality -= 1
+        else:
+            item.quality -= 2
+        return item
+
+    def update_quality_aged_brie(self, item):
+        item.quality += 1
+        return item
+
+    def update_quality_backstage_pass(self, item):
+        if item.sell_in <= 0:
+            item.quality = 0
+        elif item.sell_in <= 5:
+            item.quality += 3
+        elif item.sell_in <= 10:
+            item.quality += 2
+        else:
+            pass
+        return item
 
 
 class Item:
